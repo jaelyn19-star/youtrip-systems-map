@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beepbop — Workflows & Systems Map</title>
+<style>
+  :root{
+    --bg:#0e1116; --panel:#161b22; --panel2:#1c232d; --line:#2a313c;
+    --ink:#e6edf3; --mut:#8b97a7; --dim:#5d6877;
+    --teal:#16c2c2; --teal-d:#0e8a8a; --coral:#ff6b6b; --amber:#f5b94a;
+    --green:#3fb950; --blue:#58a6ff; --purple:#bc8cff;
+    --r:14px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  a{color:var(--teal);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:50;background:rgba(14,17,22,.86);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;gap:18px;height:56px;flex-wrap:wrap}
+  nav .brand{font-weight:800;letter-spacing:.3px;color:#fff;margin-right:auto}
+  nav .brand span{color:var(--teal)}
+  nav a{color:var(--mut);font-size:13px;font-weight:600}
+  nav a:hover{color:var(--ink);text-decoration:none}
+
+  /* hero */
+  header.hero{padding:46px 0 30px;border-bottom:1px solid var(--line);
+    background:radial-gradient(900px 360px at 18% -10%,rgba(22,194,194,.14),transparent 60%),
+               radial-gradient(700px 300px at 90% 0%,rgba(255,107,107,.10),transparent 55%)}
+  .hero h1{font-size:32px;margin:0 0 8px;font-weight:800;letter-spacing:-.4px}
+  .hero p{color:var(--mut);max-width:760px;margin:0 0 22px;font-size:15.5px}
+  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+    padding:16px 14px;text-align:center}
+  .stat b{display:block;font-size:26px;color:#fff;font-weight:800;line-height:1}
+  .stat small{color:var(--mut);font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;display:block;margin-top:7px}
+
+  section{padding:40px 0;border-bottom:1px solid var(--line)}
+  h2.sec{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);
+    margin:0 0 4px;font-weight:700}
+  .sec-title{font-size:24px;font-weight:800;margin:0 0 6px;letter-spacing:-.3px}
+  .sec-sub{color:var(--mut);margin:0 0 24px;max-width:780px}
+
+  .grid{display:grid;gap:14px}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+  .card h3{margin:0 0 4px;font-size:15.5px;color:#fff;display:flex;align-items:center;gap:8px}
+  .card p{margin:6px 0 0;color:var(--mut);font-size:13.5px}
+
+  .group-label{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
+    color:var(--dim);margin:26px 0 12px;display:flex;align-items:center;gap:10px}
+  .group-label::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  .cmd{display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:12.5px;color:var(--teal);background:rgba(22,194,194,.10);
+    border:1px solid rgba(22,194,194,.25);border-radius:7px;padding:1px 7px}
+  .skill{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 15px}
+  .skill .top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px}
+  .skill p{margin:0;color:var(--mut);font-size:12.8px;line-height:1.5}
+
+  .badge{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.4px;white-space:nowrap}
+  .b-live{background:rgba(63,185,80,.15);color:var(--green);border:1px solid rgba(63,185,80,.3)}
+  .b-part{background:rgba(245,185,74,.15);color:var(--amber);border:1px solid rgba(245,185,74,.3)}
+  .b-todo{background:rgba(255,107,107,.13);color:var(--coral);border:1px solid rgba(255,107,107,.3)}
+  .b-hold{background:rgba(188,140,255,.13);color:var(--purple);border:1px solid rgba(188,140,255,.3)}
+
+  /* initiative rows */
+  .init{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px 17px;margin-bottom:10px}
+  .init .head{display:flex;align-items:center;gap:12px}
+  .init .num{font-weight:800;color:var(--dim);font-size:13px;min-width:22px}
+  .init .name{font-weight:700;color:#fff;font-size:14.5px;flex:1}
+  .init .pct{font-weight:800;font-size:14px;min-width:46px;text-align:right}
+  .init .bar{height:6px;background:#222a34;border-radius:6px;margin-top:10px;overflow:hidden}
+  .init .fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--teal-d),var(--teal))}
+  .init .meta{color:var(--mut);font-size:12.5px;margin-top:9px}
+  .init .meta b{color:var(--ink);font-weight:600}
+
+  /* flow */
+  .flow{display:flex;align-items:stretch;gap:0;flex-wrap:wrap}
+  .step{flex:1;min-width:150px;background:var(--panel2);border:1px solid var(--line);
+    border-radius:12px;padding:13px 14px;position:relative}
+  .step .n{font-size:11px;font-weight:700;color:var(--teal);letter-spacing:.6px}
+  .step h4{margin:4px 0 4px;font-size:13.5px;color:#fff}
+  .step p{margin:0;font-size:12px;color:var(--mut);line-height:1.45}
+  .arrow{align-self:center;color:var(--dim);font-size:20px;padding:0 6px}
+
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line)}
+  th{color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.6px;font-weight:700}
+  td b{color:#fff;font-weight:600}
+  tr:hover td{background:rgba(255,255,255,.02)}
+
+  /* assessment */
+  .rec{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--teal);
+    border-radius:10px;padding:16px 18px;margin-bottom:12px}
+  .rec.p1{border-left-color:var(--coral)}
+  .rec.p2{border-left-color:var(--amber)}
+  .rec.p3{border-left-color:var(--blue)}
+  .rec .rh{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .rec .pri{font-size:10.5px;font-weight:800;letter-spacing:.5px;padding:2px 9px;border-radius:6px}
+  .rec.p1 .pri{background:rgba(255,107,107,.15);color:var(--coral)}
+  .rec.p2 .pri{background:rgba(245,185,74,.15);color:var(--amber)}
+  .rec.p3 .pri{background:rgba(88,166,255,.15);color:var(--blue)}
+  .rec h3{margin:0;font-size:15.5px;color:#fff;flex:1}
+  .rec p{margin:6px 0 0;color:var(--mut);font-size:13.5px}
+  .rec .why{color:var(--dim);font-size:12.5px;margin-top:7px}
+  .rec .why b{color:var(--mut)}
+
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .pill{display:inline-block;font-size:12px;color:var(--mut);background:var(--panel2);
+    border:1px solid var(--line);border-radius:20px;padding:3px 11px;margin:0 6px 6px 0}
+  ul.tick{list-style:none;padding:0;margin:8px 0 0}
+  ul.tick li{padding:5px 0 5px 24px;position:relative;color:var(--mut);font-size:13.5px}
+  ul.tick li::before{content:"›";position:absolute;left:6px;color:var(--teal);font-weight:800}
+
+  footer{padding:30px 0 60px;color:var(--dim);font-size:12.5px;text-align:center}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--mut)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:9px;height:9px;border-radius:50%}
+
+  @media(max-width:880px){
+    .stats{grid-template-columns:repeat(2,1fr)} .g3,.g4{grid-template-columns:1fr 1fr}
+    .two,.g2{grid-template-columns:1fr} .arrow{display:none}
+  }
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <div class="brand">Beep<span>bop</span> · Systems Map</div>
+  <a href="#skills">Skills</a>
+  <a href="#automation">Automations</a>
+  <a href="#initiatives">Initiatives</a>
+  <a href="#stack">Stack</a>
+  <a href="#brands">Brands</a>
+  <a href="#memory">Rules Engine</a>
+  <a href="#flows">Workflows</a>
+  <a href="#assess">Assessment</a>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <h1>Your AI workflow & systems map</h1>
+  <p>A single view of everything running inside the Beepbop hub — the slash-command skills, the scheduled
+  Python agents, the 9-initiative automation roadmap, your data stack, the four brand agents, and the
+  memory rules that govern how every article gets written. Snapshot as of <b>25 May 2026</b>.</p>
+  <div class="stats">
+    <div class="stat"><b>21</b><small>Skills</small></div>
+    <div class="stat"><b>6</b><small>Scheduled agents</small></div>
+    <div class="stat"><b>9</b><small>Init. roadmap</small></div>
+    <div class="stat"><b>4</b><small>Brands</small></div>
+    <div class="stat"><b>40+</b><small>Memory rules</small></div>
+  </div>
+</div></header>
+
+<!-- ============ SKILLS ============ -->
+<section id="skills"><div class="wrap">
+  <h2 class="sec">Layer 1 — Interactive</h2>
+  <div class="sec-title">Slash-command skills</div>
+  <p class="sec-sub">21 skills you trigger by hand in a session. Grouped by job. These are the on-demand
+  half of the system — the scheduled agents below are the always-on half.</p>
+
+  <div class="group-label">Content production</div>
+  <div class="grid g3">
+    <div class="skill"><div class="top"><span class="cmd">/article</span><span class="badge b-live">live</span></div><p>Brief → publish-ready YouTrip article in one session (3-pass: draft → tone → fact-check). Loads all voice/format memory rules.</p></div>
+    <div class="skill"><div class="top"><span class="cmd">/brief</span><span class="badge b-live">live</span></div><p>Keyword → filled article brief using live GSC + Semrush data. Feeds straight into /article.</p></div>
+    <div class="skill"><div class="top"><span class="cmd">/research</span><span class="badge b-live">live</span></div><p>Scrapes PAA, Autocomplete, TikTok, Instagram before writing. Locale-aware (<span class="cmd">au:</span> prefix).</p></div>
+    <div class="skill"><div class="top"><span class="cmd">/factcheck</span><span class="badge b-live">live</span></div><p>Parallel sub-agents verify every claim. STRICT (finance) vs STANDARD (travel) auto-detected. Persistent fact ledger.</p></div>
+    <div class="skill"><div class="top"><span class="cmd">/factory</span><span class="badge b-live">live</span></div><p>Queue-driven pipeline: research → /article → /factcheck → outbox, per item, unattended.</p></div>
+    <div class="skill"><div class="top"><span class="cmd">/update</span><span class="badge b-live">live</span></div><p>Finds stale articles, outputs a targeted refresh brief ready for /article.</p></div>
+    <div class="skill"><div class="top"><span class="cmd">/edits</span><span class="badge b-live">live</span></div><p>Review/approve/reject pending edits proposed by the Article Update Agent.</p></div>
+    <div class="skill"><div class="top"><span class="cmd">/content-sprint</span><span class="badge b-live">live</span></div><p>Plans the monthly article batch against cluster targets + the compound-lag schedule.</p></div>
+    <div class="skill"><div class="top"><span class="cmd">/youtube-brief</span><span class="badge b-live">live</span></div><p>Full video brief — title, hook, outline, SEO tags, thumbnail angle.</p></div>
+  </div>
+
+  <div class="group-label">SEO diagnostics &amp; reporting</div>
+  <div class="grid g3">
+    <div class="skill"><div class="top"><span class="cmd">/seo-analysis</span><span class="badge b-live">live</span></div><p>Weekly diagnostic: how did Top 10 do, what moved it, what to prioritise. The catch-all SEO check-in.</p></div>
+    <div class="skill"><div class="top"><span class="cmd">/weekly</span><span class="badge b-live">live</span></div><p>Friday review ritual — what shipped, what slipped, organic vs target, next week's priority.</p></div>
+    <div class="skill"><div class="top"><span class="cmd">/quick-wins</span><span class="badge b-live">live</span></div><p>GSC pages at pos 4–15 with high impressions, low CTR — ranked by opportunity score.</p></div>
+    <div class="skill"><div class="top"><span class="cmd">/track-targets</span><span class="badge b-live">live</span></div><p>Live GSC traffic vs 2026 monthly click targets; flags at-risk months.</p></div>
+    <div class="skill"><div class="top"><span class="cmd">/monthly-report</span><span class="badge b-live">live</span></div><p>GSC + Semrush → leadership-ready organic performance report.</p></div>
+    <div class="skill"><div class="top"><span class="cmd">/competitor-gap</span><span class="badge b-part">semrush-gated</span></div><p>Semrush keyword-gap vs competitors, mapped to your clusters. Limited by Semrush units.</p></div>
+    <div class="skill"><div class="top"><span class="cmd">/keyword-scan</span><span class="badge b-part">partial</span></div><p>Weekly opportunity scanner — GSC page-2 + competitor gaps, scored. NEW/gap stream on hold (units).</p></div>
+    <div class="skill"><div class="top"><span class="cmd">/brand-sync</span><span class="badge b-live">live</span></div><p>One-command weekly performance check across all 4 brands.</p></div>
+    <div class="skill"><div class="top"><span class="cmd">/audit-404</span><span class="badge b-live">live</span></div><p>Pulls 404s from GSC, triages redirects, outputs a dev-ready action plan.</p></div>
+  </div>
+
+  <div class="group-label">System &amp; memory</div>
+  <div class="grid g3">
+    <div class="skill"><div class="top"><span class="cmd">/queue</span><span class="badge b-live">live</span></div><p>Manage the content factory queue — list, add, reset, triage, sync from the planning sheet.</p></div>
+    <div class="skill"><div class="top"><span class="cmd">/retro</span><span class="badge b-live">live</span></div><p>Capture a learning as an actionable rule after a session.</p></div>
+    <div class="skill"><div class="top"><span class="cmd">/sync</span><span class="badge b-live">live</span></div><p>Save session context to HANDOFF.md + SESSION-LOG.md for continuity.</p></div>
+  </div>
+</div></section>
+
+<!-- ============ AUTOMATIONS ============ -->
+<section id="automation"><div class="wrap">
+  <h2 class="sec">Layer 2 — Always-on</h2>
+  <div class="sec-title">Scheduled agents</div>
+  <p class="sec-sub">Python scripts running on <code>launchd</code>/cron — these fire without you. Most pipe a
+  digest into the Slack <b>Beepbop Alerts</b> channel.</p>
+  <div class="card" style="padding:6px 4px">
+    <table>
+      <thead><tr><th>Agent</th><th>Schedule</th><th>What it does</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td><b>Article Update Agent</b><br><small style="color:var(--dim)">article_update_agent.py</small></td><td>Daily 8:30am</td><td>Watches MAS, banks, SingSaver, Mileslion, Google News for finance changes; proposes edits to live card articles</td><td>Pending edits → <span class="cmd">/edits</span></td></tr>
+        <tr><td><b>Competitor News Monitor</b><br><small style="color:var(--dim)">competitor_news_monitor.py</small></td><td>Daily 8:15am</td><td>Tracks news across 17 fintech/travel brands</td><td>Slack digest</td></tr>
+        <tr><td><b>Keyword Opportunity Scanner</b><br><small style="color:var(--dim)">keyword_opportunity_scanner.py</small></td><td>Mon 8:43am</td><td>TRENDING (GSC impression deltas) + OPTIMISE (pos 11–30) streams; NEW/gap stream paused</td><td>Slack + JSON → <span class="cmd">/keyword-scan</span></td></tr>
+        <tr><td><b>Google Core Update Monitor</b><br><small style="color:var(--dim)">google_core_update_monitor.py</small></td><td>Daily</td><td>Watches for Google algorithm/core update announcements</td><td>Slack alert</td></tr>
+        <tr><td><b>FX Rate Tracker</b><br><small style="color:var(--dim)">rate_tracker.py</small></td><td>Daily</td><td>Yahoo Finance pull; alerts only on all-time highs/lows (anti-spam)</td><td>Slack alert</td></tr>
+        <tr><td><b>Queue auto-complete</b><br><small style="color:var(--dim)">mark_queue_done.py (hook)</small></td><td>On every save</td><td>PostToolUse hook — marks a queue item done when its outbox file lands</td><td>content-queue.json</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="sec-sub" style="margin-top:14px">Also wired as hooks: a <b>Stop</b> hook nudges you to <span class="cmd">/sync</span> at session end and prints the top of HANDOFF.md.</p>
+</div></section>
+
+<!-- ============ INITIATIVES ============ -->
+<section id="initiatives"><div class="wrap">
+  <h2 class="sec">The roadmap</h2>
+  <div class="sec-title">9 automation initiatives</div>
+  <p class="sec-sub">Your official Apr–Sep 2026 build plan. Items 1–5 are the "end-to-end content engine"
+  (end-of-May target); 6–9 are downstream. Status as of the 8 May roadmap snapshot.</p>
+
+  <div class="init"><div class="head"><span class="num">1</span><span class="name">Finance News → Article Update Agent</span><span class="pct" style="color:var(--green)">100%</span></div><div class="bar"><div class="fill" style="width:100%"></div></div><div class="meta">Live daily 8:30am. Tracks edit-acceptance rate, time-to-detection, position stability on top-10 card articles.</div></div>
+
+  <div class="init"><div class="head"><span class="num">2</span><span class="name">AI Content Generation Pipeline</span><span class="pct" style="color:var(--green)">100%</span></div><div class="bar"><div class="fill" style="width:100%"></div></div><div class="meta"><b>10 drafts produced</b>, queue fully processed. Ledger live for URL + days-to-publish tracking. <b style="color:var(--coral)">⚠ 0 published — 5 drafts sitting ≥16 days.</b></div></div>
+
+  <div class="init"><div class="head"><span class="num">3</span><span class="name">AI Content Research Pipeline</span><span class="pct" style="color:var(--green)">100%</span></div><div class="bar"><div class="fill" style="width:100%"></div></div><div class="meta">Locale-aware synthesis (sg/au/us/gb/my/ph). PAA, Autocomplete, TikTok, Instagram sources. Degrades gracefully if Semrush 403s.</div></div>
+
+  <div class="init"><div class="head"><span class="num">4</span><span class="name">Keyword Opportunity Scanner</span><span class="pct" style="color:var(--amber)">90%</span></div><div class="bar"><div class="fill" style="width:90%;background:linear-gradient(90deg,#b8860b,var(--amber))"></div></div><div class="meta">TRENDING + OPTIMISE streams live Mondays. <b>Remaining 10%:</b> relevance-filter tuning + NEW/gap stream blocked on Semrush units (ERROR 132).</div></div>
+
+  <div class="init"><div class="head"><span class="num">5</span><span class="name">WordPress Integration</span><span class="pct" style="color:var(--amber)">~75%</span></div><div class="bar"><div class="fill" style="width:75%;background:linear-gradient(90deg,#b8860b,var(--amber))"></div></div><div class="meta">No-dev REST + App Password path live-validated; pushes house-format drafts to you.co/sg. <b>Left:</b> 10-article time baseline + refresh flow. Meta = manual paste (decided).</div></div>
+
+  <div class="init"><div class="head"><span class="num">6</span><span class="name">Rank-Driven Refresh Detection</span><span class="pct" style="color:var(--coral)">0%</span></div><div class="bar"><div class="fill" style="width:2%;background:var(--coral)"></div></div><div class="meta">Not started. Goal: 3+ position drops flagged within 7 days; refresh brief in 24h; +800–1,500 clicks/mo protected.</div></div>
+
+  <div class="init"><div class="head"><span class="num">7</span><span class="name">Quality Elevation Engine</span><span class="pct" style="color:var(--coral)">0%</span></div><div class="bar"><div class="fill" style="width:2%;background:var(--coral)"></div></div><div class="meta">Not started; blocked on Item 2 at scale. Goal: 10 priority FX articles elevated by Dec; +15K FX clicks/mo (2027).</div></div>
+
+  <div class="init"><div class="head"><span class="num">8</span><span class="name">Competitive Response System</span><span class="pct" style="color:var(--amber)">30%</span></div><div class="bar"><div class="fill" style="width:30%;background:linear-gradient(90deg,#b8860b,var(--amber))"></div></div><div class="meta">News monitor live (17 brands). Missing: weekly rank-gain detection + auto-response brief generation.</div></div>
+
+  <div class="init"><div class="head"><span class="num">9</span><span class="name">Programmatic Content Factory (currency pairs)</span><span class="pct" style="color:var(--coral)">5%</span></div><div class="bar"><div class="fill" style="width:5%;background:var(--coral)"></div></div><div class="meta">Hard-blocked on Item 5 + a rate-API decision. 20 currency-pair pages from one template; target launch late Aug/Sep.</div></div>
+
+  <div class="legend">
+    <span><span class="dot" style="background:var(--green)"></span> Live / done</span>
+    <span><span class="dot" style="background:var(--amber)"></span> In progress</span>
+    <span><span class="dot" style="background:var(--coral)"></span> Not started / blocked</span>
+  </div>
+</div></section>
+
+<!-- ============ STACK ============ -->
+<section id="stack"><div class="wrap">
+  <h2 class="sec">Data &amp; tools</h2>
+  <div class="sec-title">Integration stack</div>
+  <p class="sec-sub">What Beepbop can read and write directly. Live API data only for SEO metrics — never cached or fabricated.</p>
+  <div class="grid g3">
+    <div class="card"><h3>🔍 Google Search Console</h3><p>MCP server at <code>~/gsc-mcp/</code>. Search analytics, URL inspection, site list. Python fallback for country-filtered/paginated pulls.</p></div>
+    <div class="card"><h3>📊 Semrush</h3><p>MCP <code>semrush-server</code> (db: sg) — keyword overview, related, domain, backlinks. <span class="badge b-hold">units depleted</span> on the scanner's separate API key.</p></div>
+    <div class="card"><h3>📑 Google Sheets</h3><p>Service account <code>beepbop@youtrip-seo</code>. Read/write planning sheet + New SEO Tracker. Share any sheet to grant access.</p></div>
+    <div class="card"><h3>💬 Slack</h3><p>Incoming webhook → Beepbop Alerts. All monitor digests + scanner output land here. Also full MCP search/history.</p></div>
+    <div class="card"><h3>📝 WordPress (you.co/sg)</h3><p>Native REST API + Application Password. Pushes house-format Gutenberg drafts. WP Engine strips <code>&lt;script&gt;</code>; Yoast meta = manual.</p></div>
+    <div class="card"><h3>📚 Confluence</h3><p>API token + Python helper. Fetch any internal KB page by shortlink — primary fact-check source for YouBiz product facts.</p></div>
+  </div>
+</div></section>
+
+<!-- ============ BRANDS ============ -->
+<section id="brands"><div class="wrap">
+  <h2 class="sec">Routing</h2>
+  <div class="sec-title">Brand agents &amp; domains</div>
+  <p class="sec-sub">Default brand for all work is <b>YouTrip SG</b> unless stated. Brand-specific requests route to that folder; cross-brand work stays at hub root.</p>
+  <div class="grid g4">
+    <div class="card"><h3>🟢 YouTrip SG</h3><p><code>./youtrip-sg/</code> · primary brand. Travel + finance articles, technical SEO. YTBLOG5, S$400 free ATM/mo.</p></div>
+    <div class="card"><h3>🦘 YouTrip AU</h3><p><code>./youtrip-au/</code> · AU market content + keywords. 2% cashback, A$1,500 ATM. YTNEW10.</p></div>
+    <div class="card"><h3>💼 YouBiz</h3><p><code>./youbiz/</code> · B2B / expense / corporate cards. First-party founder voice, STRICT fact-check.</p></div>
+    <div class="card"><h3>▶️ YouTube SG</h3><p><code>./youtube/</code> · 2 videos/mo, SEO-first. Scripts, tags, channel tracking.</p></div>
+  </div>
+  <div class="grid g3" style="margin-top:14px">
+    <div class="card"><h3>📁 content/</h3><p>Article writing, optimisation, research, freelancer briefs. <code>outbox/</code> holds finished drafts.</p></div>
+    <div class="card"><h3>📁 seo-technical/</h3><p>Technical audits, keyword research, performance analytics.</p></div>
+    <div class="card"><h3>📁 learning/</h3><p>Python automation + AI/prompt engineering — every script doubles as a learning exercise.</p></div>
+  </div>
+</div></section>
+
+<!-- ============ MEMORY ============ -->
+<section id="memory"><div class="wrap">
+  <h2 class="sec">The differentiator</h2>
+  <div class="sec-title">Memory &amp; rules engine</div>
+  <p class="sec-sub">40+ memory files encode how every article gets written — loaded automatically by <span class="cmd">/article</span>.
+  This is what keeps AI-assisted output on-brand and indistinguishable from hand-writing. A sample of the governing rules:</p>
+  <div class="two">
+    <div class="card">
+      <h3>✍️ Voice &amp; writing</h3>
+      <ul class="tick">
+        <li>Human-indistinguishable, AI-detector safe; UK spelling, contractions, zero prose em dashes</li>
+        <li>No AI filler ("it's worth noting", "furthermore", "when it comes to")</li>
+        <li>Strip trader/finance jargon from body copy</li>
+        <li>Travel/food = "sharp friend who's done the trip" voice</li>
+        <li>Every delivery includes a fun one-liner + 3–4 alternatives</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🧱 Structure &amp; format</h3>
+      <ul class="tick">
+        <li>Answer-first universal: answer block adjacent to H1, then TLDR table (the answer block)</li>
+        <li>HTML TOC anchors, title-case H2s, dense paras → bullets</li>
+        <li>Currency: <code>2,990 JPY (~S$27)</code> — code after number, no symbols</li>
+        <li>Product launches + scam advisories = their own formats</li>
+        <li>Conclusion = punchy one-liner + YTBLOG5 CTA blurb</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>⚖️ Finance framing</h3>
+      <ul class="tick">
+        <li>Honest reviewer who happens to work for YouTrip: neutral body, opinionated verdict</li>
+        <li>YouTrip = best for the specific job, never "best overall"</li>
+        <li><b>Never</b> recommend or link Wise / Revolut / competitors</li>
+        <li>Plain language ban-list; let the maths land in real dollars</li>
+        <li>Payment hierarchy: tap YouTrip card → cash → TNG backup</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🔎 Fact-checking</h3>
+      <ul class="tick">
+        <li>Verify all numbers proactively — never wait to be asked</li>
+        <li>STRICT (finance, official sources) vs STANDARD (travel) auto-detected</li>
+        <li>Treat /research output + the source article as claims, not facts</li>
+        <li>Never flag-and-leave unverified numbers — rephrase, range, or remove</li>
+        <li>ATM cash via YouTrip, never money changers</li>
+      </ul>
+    </div>
+  </div>
+  <p class="sec-sub" style="margin-top:16px">Backed by <code>shared/decisions.md</code> (rationale log), <code>shared/workflows.md</code> (SEO/AEO/GEO master reference + on-page checklist), <code>fact_ledger.md</code>, and <code>retrospectives/</code>. <b>Conflict rule:</b> latest SEO best practice beats a previously-saved voice rule.</p>
+</div></section>
+
+<!-- ============ FLOWS ============ -->
+<section id="flows"><div class="wrap">
+  <h2 class="sec">How it fits together</h2>
+  <div class="sec-title">Core workflows</div>
+
+  <div class="group-label">Article production (3-pass, one session)</div>
+  <div class="flow">
+    <div class="step"><div class="n">PASS 1</div><h4>Draft</h4><p>Written to brief. SEO/AEO/GEO from the start, organic YouTrip mention.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">PASS 2</div><h4>Tone &amp; length</h4><p>Cut filler, skim-test, voice + word-count check.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">PASS 3</div><h4>Fact-check</h4><p>Every figure verified; ⚠ flags on anything unconfirmed.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">OUT</div><h4>Outbox</h4><p>Markdown + meta + schema → <code>content/outbox/</code>. Queue auto-marked done.</p></div>
+  </div>
+
+  <div class="group-label">Factory pipeline (queue-driven, batch)</div>
+  <div class="flow">
+    <div class="step"><div class="n">QUEUE</div><h4>/queue week</h4><p>Pull rows from the planning sheet; detect refresh / brand prefixes.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">RESEARCH</div><h4>research_agent</h4><p>Python research-only layer per item (locale-aware).</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">WRITE</div><h4>/article</h4><p>Passes 1–3 in-session with full memory rules.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">VERIFY</div><h4>/factcheck</h4><p>Parallel sub-agents + ledger.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">SHIP</div><h4>wp_publish.py</h4><p>Push draft to WordPress. <b style="color:var(--coral)">← bottleneck</b></p></div>
+  </div>
+
+  <div class="group-label">Weekly SEO cadence</div>
+  <div class="flow">
+    <div class="step"><div class="n">MON</div><h4>Keyword scanner</h4><p>Auto-fires → Slack. <span class="cmd">/keyword-scan</span> to triage picks into queue.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">MID</div><h4>/seo-analysis</h4><p>Top-10 trajectory + what moved it + this week's priority.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">FRI</div><h4>/weekly</h4><p>Shipped vs slipped, organic vs target, next priority.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">MONTH</div><h4>/monthly-report</h4><p>Leadership organic report, sourced benchmarks.</p></div>
+  </div>
+</div></section>
+
+<!-- ============ ASSESSMENT ============ -->
+<section id="assess"><div class="wrap">
+  <h2 class="sec">The honest read</h2>
+  <div class="sec-title">Assessment &amp; what to improve next</div>
+  <p class="sec-sub">The build phase is genuinely impressive — the research → write → fact-check engine is real and running.
+  But the data shows the value is leaking at one specific point, and a few high-leverage gaps remain. Prioritised below.</p>
+
+  <div style="margin-bottom:26px">
+    <div class="group-label" style="color:var(--green)">What's working</div>
+    <span class="pill">✓ End-to-end content engine (init 1–3) genuinely done</span>
+    <span class="pill">✓ Memory rules keep AI output on-brand</span>
+    <span class="pill">✓ News + FX + core-update monitoring all live</span>
+    <span class="pill">✓ Two-mode fact-checking kills round-to-round drift</span>
+    <span class="pill">✓ WordPress no-dev publish path validated</span>
+    <span class="pill">✓ Strategy already rebalanced toward defenders</span>
+  </div>
+
+  <div class="rec p1">
+    <div class="rh"><span class="pri">PRIORITY 1</span><h3>Close the publish loop — 10 drafts, 0 live</h3></div>
+    <p>The factory produced 10 drafts; the ledger says <b>none are published</b> and 5 have sat ≥16 days. Every hour of research, drafting and fact-checking upstream is stranded until these ship. This is the single biggest ROI move available right now.</p>
+    <p class="why"><b>Do:</b> batch-publish the backlog through <code>wp_publish.py</code>, record each live URL via <code>pipeline_ledger.py published</code>, and wire the publish step as the explicit final stage of <span class="cmd">/factory</span> so new drafts don't pool. <b>Why it matters:</b> nothing downstream (attribution, days-to-publish, scanner-vs-handbrief comparison) can be measured until URLs are live.</p>
+  </div>
+
+  <div class="rec p1">
+    <div class="rh"><span class="pri">PRIORITY 1</span><h3>Unblock Semrush units</h3></div>
+    <p>The NEW/gap stream of the keyword scanner <b>and</b> <span class="cmd">/competitor-gap</span> are both throttled by a depleted Semrush units balance (ERROR 132). Two of your discovery tools are running at partial power.</p>
+    <p class="why"><b>Do:</b> the cheapest unblock per your own roadmap is refactoring <code>pull_semrush_gaps()</code> from <code>domain_domains</code> (80 units/row) to <code>domain_organic</code> (10/row) and computing the gap in Python — 8× cheaper, no spend. The ~US$50 top-up is the fallback. <b>Note:</b> the <code>semrush-server</code> MCP is on a separate balance and still works — don't conflate them.</p>
+  </div>
+
+  <div class="rec p2">
+    <div class="rh"><span class="pri">PRIORITY 2</span><h3>Build Initiative 6 (rank-driven refresh detection) next, not net-new</h3></div>
+    <p>Most YouTrip articles are already published, and your own 13 May strategy decision shifted effort toward <b>defender maintenance over publishing volume</b>. Initiative 6 is the automation that serves that strategy — yet it's at 0%.</p>
+    <p class="why"><b>Do:</b> weekly GSC scan for pages dropping 3+ positions over 2 weeks → auto-refresh brief. You already have <span class="cmd">/update</span> (manual) and the surgical-edit tiering rule — Init 6 is the trigger layer on top. Protects an estimated +800–1,500 clicks/mo. Higher leverage than Init 7/9 given the lag math.</p>
+  </div>
+
+  <div class="rec p2">
+    <div class="rh"><span class="pri">PRIORITY 2</span><h3>Add a "which command when" router</h3></div>
+    <p>21 skills is powerful but several overlap: <span class="cmd">/weekly</span> vs <span class="cmd">/seo-analysis</span> vs <span class="cmd">/track-targets</span> vs <span class="cmd">/monthly-report</span> all answer "how are we doing"; <span class="cmd">/keyword-scan</span> vs <span class="cmd">/competitor-gap</span> vs <span class="cmd">/quick-wins</span> all surface opportunities. Friction is choosing.</p>
+    <p class="why"><b>Do:</b> a one-page decision guide (daily / weekly / monthly / ad-hoc, "I want to find topics" vs "I want to report") — could even be a section in this page or a <span class="cmd">/help</span>-style skill. Low effort, removes a recurring micro-decision.</p>
+  </div>
+
+  <div class="rec p3">
+    <div class="rh"><span class="pri">PRIORITY 3</span><h3>Add the GA4 engagement layer</h3></div>
+    <p>You measure clicks (GSC) but not what happens after the click. The roadmap's GA4 MCP server (Phase 3) is unbuilt, so "which articles drive real engagement, not just traffic" is still a blind spot.</p>
+    <p class="why"><b>Do:</b> build <code>~/ga4-mcp/</code> on the same OAuth pattern as GSC. Lets <span class="cmd">/monthly-report</span> and <span class="cmd">/seo-analysis</span> distinguish high-traffic-low-engagement pages — directly informs the refresh queue.</p>
+  </div>
+
+  <div class="rec p3">
+    <div class="rh"><span class="pri">PRIORITY 3</span><h3>Actually run the measurement loop</h3></div>
+    <p>Every initiative has named target metrics (edit-acceptance ≥70%, topics-surfaced/week, days-to-publish, scanner-sourced vs hand-briefed clicks) — but with 0 articles published, almost none are being tracked yet. The instrumentation exists; the data doesn't flow.</p>
+    <p class="why"><b>Do:</b> once P1 ships URLs, schedule a monthly read of the ledger metrics so you can prove the engine's ROI to leadership — which is exactly the credibility-with-sourced-numbers bar you hold yourself to.</p>
+  </div>
+
+  <div class="card" style="margin-top:22px;border-left:3px solid var(--teal)">
+    <h3>One-line verdict</h3>
+    <p style="font-size:14.5px">You've over-built the <b>creation</b> half and under-built the <b>distribution + measurement</b> half. The fastest win isn't another tool — it's shipping the 10 drafts already sitting in the outbox, then turning the maintenance automations (Init 6) on so the system protects traffic it's already earned.</p>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  Generated from your live hub config — skills, <code>shared/</code>, memory roadmap, decisions log, settings hooks.
+  Snapshot 25 May 2026 · regenerate any time as the system grows.
+</div></footer>
+
+</body>
+</html>
