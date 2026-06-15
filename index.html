@@ -152,7 +152,7 @@
   <h1>Your AI workflow & systems map</h1>
   <p>A single view of everything running inside the Beepbop hub — the slash-command skills, the scheduled
   Python agents, the 9-initiative automation roadmap, your data stack, the four brand agents, and the
-  memory rules that govern how every article gets written. Snapshot as of <b>25 May 2026</b>.</p>
+  memory rules that govern how every article gets written. Snapshot as of <b>27 May 2026</b>.</p>
   <div class="stats">
     <div class="stat"><b>21</b><small>Skills</small></div>
     <div class="stat"><b>6</b><small>Scheduled agents</small></div>
@@ -240,7 +240,7 @@
 
   <div class="init"><div class="head"><span class="num">4</span><span class="name">Keyword Opportunity Scanner</span><span class="pct" style="color:var(--amber)">90%</span></div><div class="bar"><div class="fill" style="width:90%;background:linear-gradient(90deg,#b8860b,var(--amber))"></div></div><div class="meta">TRENDING + OPTIMISE streams live Mondays. <b>Remaining 10%:</b> relevance-filter tuning + NEW/gap stream blocked on Semrush units (ERROR 132).</div></div>
 
-  <div class="init"><div class="head"><span class="num">5</span><span class="name">WordPress Integration</span><span class="pct" style="color:var(--amber)">~75%</span></div><div class="bar"><div class="fill" style="width:75%;background:linear-gradient(90deg,#b8860b,var(--amber))"></div></div><div class="meta">No-dev REST + App Password path live-validated; pushes house-format drafts to you.co/sg. <b>Left:</b> 10-article time baseline + refresh flow. Meta = manual paste (decided).</div></div>
+  <div class="init"><div class="head"><span class="num">5</span><span class="name">WordPress Integration</span><span class="pct" style="color:var(--green)">~98%</span></div><div class="bar"><div class="fill" style="width:98%"></div></div><div class="meta">No-dev REST + App Password path live-validated end-to-end (26 May). Pushes house-format drafts to you.co/sg with post-push verify, Yoast clipboard auto-paste flow (2 ⌘V's, browser auto-opens), and empty-excerpt warning. JSON-LD dismissed (Yoast auto-generates Article + FAQ + HowTo). MCP-plugin proposal closed. <b>Left:</b> featured image upload only (by design).</div></div>
 
   <div class="init"><div class="head"><span class="num">6</span><span class="name">Rank-Driven Refresh Detection</span><span class="pct" style="color:var(--coral)">0%</span></div><div class="bar"><div class="fill" style="width:2%;background:var(--coral)"></div></div><div class="meta">Not started. Goal: 3+ position drops flagged within 7 days; refresh brief in 24h; +800–1,500 clicks/mo protected.</div></div>
 
@@ -267,7 +267,7 @@
     <div class="card"><h3>📊 Semrush</h3><p>MCP <code>semrush-server</code> (db: sg) — keyword overview, related, domain, backlinks. <span class="badge b-hold">units depleted</span> on the scanner's separate API key.</p></div>
     <div class="card"><h3>📑 Google Sheets</h3><p>Service account <code>beepbop@youtrip-seo</code>. Read/write planning sheet + New SEO Tracker. Share any sheet to grant access.</p></div>
     <div class="card"><h3>💬 Slack</h3><p>Incoming webhook → Beepbop Alerts. All monitor digests + scanner output land here. Also full MCP search/history.</p></div>
-    <div class="card"><h3>📝 WordPress (you.co/sg)</h3><p>Native REST API + Application Password. Pushes house-format Gutenberg drafts. WP Engine strips <code>&lt;script&gt;</code>; Yoast meta = manual.</p></div>
+    <div class="card"><h3>📝 WordPress (you.co/sg)</h3><p>Native REST API + Application Password. Pushes house-format Gutenberg drafts with post-push verify + Yoast clipboard auto-paste. Yoast covers Article + FAQ + HowTo schema; featured image still manual.</p></div>
     <div class="card"><h3>📚 Confluence</h3><p>API token + Python helper. Fetch any internal KB page by shortlink — primary fact-check source for YouBiz product facts.</p></div>
   </div>
 </div></section>
@@ -367,7 +367,7 @@
     <div class="arrow">→</div>
     <div class="step"><div class="n">VERIFY</div><h4>/factcheck</h4><p>Parallel sub-agents + ledger.</p></div>
     <div class="arrow">→</div>
-    <div class="step"><div class="n">SHIP</div><h4>wp_publish.py</h4><p>Push draft to WordPress. <b style="color:var(--coral)">← bottleneck</b></p></div>
+    <div class="step"><div class="n">SHIP</div><h4>wp_publish.py</h4><p>Push draft to WordPress; auto-verify + Yoast clipboard paste flow.</p></div>
   </div>
 
   <div class="group-label">Weekly SEO cadence</div>
@@ -443,7 +443,7 @@
 
 <footer><div class="wrap">
   Generated from your live hub config — skills, <code>shared/</code>, memory roadmap, decisions log, settings hooks.
-  Snapshot 25 May 2026 · regenerate any time as the system grows.
+  Snapshot 27 May 2026 · regenerate any time as the system grows.
 </div></footer>
 
 </body>
